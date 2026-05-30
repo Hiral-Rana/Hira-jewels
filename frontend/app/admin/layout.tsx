@@ -19,7 +19,7 @@ export default function AdminLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, checkAuth, logout } = useAuthStore();
+  const { user, checkAuth, logout, setUser } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const [authLoading, setAuthLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -54,7 +54,10 @@ export default function AdminLayout({
           localStorage.setItem('auth-token', data.token);
           document.cookie = `auth-token=${data.token}; path=/; max-age=86400; SameSite=Strict`;
         }
-        await checkAuth();
+        if (data.data) {
+          setUser(data.data);
+        }
+        router.replace("/admin/dashboard");
         toast.success("Welcome back, Admin!");
       } else {
         toast.error(data?.error || `Authentication failed (${response.status}). Access Denied.`);
