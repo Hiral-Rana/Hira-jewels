@@ -5,7 +5,7 @@ import ProductForm from "../../ProductForm";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-export default function EditProductPage({ params }: { params: { id: string } | Promise<{ id: string }> }) {
+export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [initialData, setInitialData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
