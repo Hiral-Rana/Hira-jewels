@@ -7,7 +7,7 @@ import StartupNotice from "@/components/StartupNotice";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Jewellery Store - Premium Jewelry Collection",
+  title: "HIRA JEWELS",
   description:
     "Discover our exquisite collection of fine jewelry across festive vibe, office wear, and wedding inspirations.",
 };
