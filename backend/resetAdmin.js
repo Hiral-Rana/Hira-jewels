@@ -2,21 +2,41 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('./models/User');
 
-mongoose.connect("mongodb+srv://studiohirajewels_db_user:Hirajewelsdb@hirajewels.ocwvm5y.mongodb.net/?appName=Hirajewels")
+// Load .env when present (local dev). In production, provide env vars via host.
+require('dotenv').config();
+
+const mongoUri = process.env.MONGODB_URI;
+if (!mongoUri) {
+  console.error('ERROR: MONGODB_URI environment variable is not set.');
+  process.exit(1);
+}
+
+const adminEmail = process.env.ADMIN_EMAIL || 'studio.hirajewels@gmail.com';
+const adminPassword = process.env.ADMIN_PASSWORD;
+if (!adminPassword) {
+  console.error('ERROR: ADMIN_PASSWORD environment variable is not set.');
+  process.exit(1);
+}
+
+mongoose.connect(mongoUri)
   .then(async () => {
-    let user = await User.findOne({ email: 'studio.hirajewels@gmail.com' });
-    
+    let user = await User.findOne({ email: adminEmail });
+
     if (!user) {
-      user = new User({ email: 'studio.hirajewels@gmail.com' });
+      user = new User({ email: adminEmail });
     }
-    
-    const hash = await bcrypt.hash('Admin@hirajewels', 10);
+
+    const hash = await bcrypt.hash(adminPassword, 10);
     user.role = 'ADMIN';
     user.password = hash;
     await user.save();
-    
+
     console.log('User updated!');
-    console.log('New Email:', user.email);
+    console.log('Email:', user.email);
     console.log('Role:', user.role);
     process.exit(0);
+  })
+  .catch((err) => {
+    console.error('Failed to connect to MongoDB:', err);
+    process.exit(1);
   });
