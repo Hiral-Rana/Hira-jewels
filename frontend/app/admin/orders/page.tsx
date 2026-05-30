@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Eye, Check, X, ClipboardList, Info, IndianRupee, Trash2 } from "lucide-react";
 import Image from "next/image";
 import DeletionConfirmDialog from "@/components/admin/DeletionConfirmDialog";
+import { apiUrl } from "@/lib/api";
 
 interface Product {
   _id: string;
@@ -53,7 +54,7 @@ export default function AdminOrdersPage() {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const res = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/orders', {
+      const res = await fetch(apiUrl('/api/orders'), {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('auth-token')}`
         }
@@ -77,7 +78,7 @@ export default function AdminOrdersPage() {
   const handleStatusChange = async (orderId: string, newStatus: "PENDING" | "WORKING" | "COMPLETED") => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders/${orderId}/status`,
+        apiUrl(`/api/orders/${orderId}/status`),
         {
           method: "PATCH",
           headers: {
@@ -113,7 +114,7 @@ export default function AdminOrdersPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders/${orderToDelete._id}`,
+        apiUrl(`/api/orders/${orderToDelete._id}`),
         {
           method: 'DELETE',
           headers: {

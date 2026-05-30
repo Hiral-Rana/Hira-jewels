@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Sparkles, Palette, PenTool } from "lucide-react";
+import { apiUrl } from "@/lib/api";
 
 export default function CustomDesignPage() {
   const [formData, setFormData] = useState({
@@ -47,7 +48,7 @@ export default function CustomDesignPage() {
 
     setLoading(true);
     try {
-      const response = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/custom-orders', {
+      const response = await fetch(apiUrl('/api/custom-orders'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ProductForm from "../../ProductForm";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { apiUrl } from "@/lib/api";
 
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     const fetchProduct = async () => {
       try {
         const resolvedParams = await Promise.resolve(params);
-        const res = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + `/api/products/${resolvedParams.id}`);
+        const res = await fetch(apiUrl(`/api/products/${resolvedParams.id}`));
         const data = await res.json();
         if (data.success) {
           setInitialData(data.data);

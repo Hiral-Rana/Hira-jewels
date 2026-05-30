@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getProductCategoryLabel } from "@/lib/productCategories";
+import { apiUrl } from "@/lib/api";
 
 interface Product {
   _id?: string;
@@ -36,7 +37,7 @@ export default function AdminProductsPage() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const res = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/products');
+      const res = await fetch(apiUrl('/api/products'));
       const data = await res.json();
       if (data.success) {
         setProducts(data.data || []);
@@ -57,7 +58,7 @@ export default function AdminProductsPage() {
     if (!productToDelete) return;
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/products/${productToDelete._id || productToDelete.id}`,
+        apiUrl(`/api/products/${productToDelete._id || productToDelete.id}`),
         {
           method: "DELETE",
           headers: {

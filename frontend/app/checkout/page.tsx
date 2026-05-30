@@ -12,6 +12,7 @@ import { useCartStore } from "@/lib/store";
 import { toast } from "sonner";
 import { CheckCircle2, ShoppingBag } from "lucide-react";
 import { CachedImage } from "@/components/ui/cached-image";
+import { apiUrl } from "@/lib/api";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -63,7 +64,7 @@ export default function CheckoutPage() {
         price: item.price,
       }));
 
-      const orderResponse = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/orders', {
+      const orderResponse = await fetch(apiUrl('/api/orders'), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import Loading from "@/app/loading";
 import { ShoppingBag, ClipboardList, Clock, CheckCircle, Flame, IndianRupee } from "lucide-react";
 import { getProductCategoryLabel, normalizeProductCategoryValue } from "@/lib/productCategories";
+import { apiUrl } from "@/lib/api";
 
 interface Product {
   id: string;
@@ -32,11 +33,11 @@ export default function AdminDashboardPage() {
       try {
         setLoading(true);
         // Fetch products
-        const prodRes = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/products');
+        const prodRes = await fetch(apiUrl('/api/products'));
         const prodData = await prodRes.json();
         
         // Fetch orders
-        const ordRes = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/orders', {
+        const ordRes = await fetch(apiUrl('/api/orders'), {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('auth-token')}`
           }

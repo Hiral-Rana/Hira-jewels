@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Loading from "@/app/loading";
+import { apiUrl } from "@/lib/api";
 
 function SearchContent() {
   const router = useRouter();
@@ -44,7 +45,7 @@ function SearchContent() {
       const data = await dedupedFetch<{
         success: boolean;
         data: Product[];
-      }>((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + `/api/products?search=${encodeURIComponent(query)}&limit=50`);
+      }>(apiUrl(`/api/products?search=${encodeURIComponent(query)}&limit=50`));
 
       if (data.success) {
         setProducts(data.data);

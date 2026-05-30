@@ -9,6 +9,7 @@ import { Mail, Phone, Clock, Search, ChevronRight, FileText, X, Trash2 } from "l
 import { Input } from "@/components/ui/input";
 import DeletionConfirmDialog from "@/components/admin/DeletionConfirmDialog";
 import { cn } from "@/lib/utils";
+import { apiUrl } from "@/lib/api";
 
 interface CustomOrder {
   _id: string;
@@ -35,7 +36,7 @@ export default function AdminCustomOrdersPage() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/custom-orders', {
+      const response = await fetch(apiUrl('/api/custom-orders'), {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('auth-token')}`
         }
@@ -56,7 +57,7 @@ export default function AdminCustomOrdersPage() {
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     try {
-      const response = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + `/api/custom-orders/${id}`, {
+      const response = await fetch(apiUrl(`/api/custom-orders/${id}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ export default function AdminCustomOrdersPage() {
     if (!orderToDelete) return;
 
     try {
-      const response = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + `/api/custom-orders/${orderToDelete._id}`, {
+      const response = await fetch(apiUrl(`/api/custom-orders/${orderToDelete._id}`), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('auth-token')}`

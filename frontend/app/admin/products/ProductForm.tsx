@@ -12,6 +12,7 @@ import { ArrowLeft, Image as ImageIcon, X, Check } from "lucide-react";
 import Image from "next/image";
 import { buildProductGallery } from "@/lib/images";
 import { PRODUCT_CATEGORY_GROUPS, normalizeProductCategoryValue } from "@/lib/productCategories";
+import { apiUrl } from "@/lib/api";
 
 interface ProductFormProps {
   initialData?: any;
@@ -191,8 +192,8 @@ export default function ProductForm({ initialData, isEditing = false }: ProductF
 
     try {
       const url = isEditing
-        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/products/${initialData._id || initialData.id}`
-        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/products`;
+        ? apiUrl(`/api/products/${initialData._id || initialData.id}`)
+        : apiUrl('/api/products');
       
       const response = await fetch(url, {
         method: isEditing ? "PUT" : "POST",

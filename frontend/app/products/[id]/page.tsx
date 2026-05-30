@@ -20,6 +20,7 @@ import { CachedImage } from "@/components/ui/cached-image";
 import { getProductCategoryLabel } from "@/lib/productCategories";
 import type { CartStore, WishlistStore } from "../../../lib/store";
 import Loading from "@/app/loading";
+import { apiUrl } from "@/lib/api";
 
 export default function ProductPage({
   params,
@@ -82,7 +83,7 @@ export default function ProductPage({
         currentProductIdRef.current = productId;
 
         const productData = await dedupedFetch<{ success: boolean; data: any }>(
-          (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + `/api/products/${encodeURIComponent(productId)}`
+          apiUrl(`/api/products/${encodeURIComponent(productId)}`)
         );
 
         if (productData.success && productData.data) {
@@ -93,7 +94,7 @@ export default function ProductPage({
           const relatedData = await dedupedFetch<{
             success: boolean;
             data: Product[];
-          }>((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + `/api/products?category=${encodeURIComponent(category)}&limit=5`);
+          }>(apiUrl(`/api/products?category=${encodeURIComponent(category)}&limit=5`));
 
           if (relatedData.success) {
             const filtered = relatedData.data.filter(

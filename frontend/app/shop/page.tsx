@@ -25,6 +25,7 @@ import {
   matchesProductCategory,
   normalizeProductCategoryValue,
 } from "@/lib/productCategories";
+import { apiUrl } from "@/lib/api";
 
 export default function ShopPage() {
   const searchParams = useSearchParams();
@@ -41,7 +42,7 @@ export default function ShopPage() {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/products');
+        const response = await fetch(apiUrl('/api/products'));
         const data = await response.json();
         if (data.success && data.data) {
           setProducts(data.data);

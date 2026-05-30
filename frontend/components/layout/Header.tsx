@@ -12,6 +12,7 @@ import { Product } from "../../lib/store";
 import { dedupedFetch } from "@/lib/fetch";
 import { CachedImage } from "@/components/ui/cached-image";
 import type { CartStore, WishlistStore } from "../../lib/store";
+import { apiUrl } from "@/lib/api";
 
 export default function Header() {
   const router = useRouter();
@@ -62,7 +63,7 @@ export default function Header() {
           const data = await dedupedFetch<{
             success: boolean;
             data: Product[];
-          }>((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + `/api/products?search=${encodeURIComponent(searchQuery)}&limit=5`);
+          }>(apiUrl(`/api/products?search=${encodeURIComponent(searchQuery)}&limit=5`));
 
           if (data.success) {
             setSearchResults(data.data);

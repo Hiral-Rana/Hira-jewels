@@ -6,6 +6,7 @@ import ProductCard from "./ProductCard";
 import { Product } from "@/lib/store";
 import Loading from "@/app/loading";
 import { dedupedFetch } from "@/lib/fetch";
+import { apiUrl } from "@/lib/api";
 
 export default function FeaturedProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -19,7 +20,7 @@ export default function FeaturedProducts() {
 
     const fetchProducts = async () => {
       try {
-        const data = await dedupedFetch<{ success: boolean; data: Product[] }>((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/products');
+        const data = await dedupedFetch<{ success: boolean; data: Product[] }>(apiUrl('/api/products'));
         if (data.success && data.data) {
           // Filter by tags: popular or sale
           const filtered = data.data.filter(p => 
