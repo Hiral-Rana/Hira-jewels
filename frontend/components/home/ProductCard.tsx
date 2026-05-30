@@ -15,9 +15,10 @@ import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   product: Product;
+  noShadow?: boolean;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, noShadow = false }: ProductCardProps) {
   const router = useRouter();
   const addToCart = useCartStore((state) => state.addItem);
   const addToWishlist = useWishlistStore((state) => state.addItem);
@@ -82,7 +83,10 @@ export default function ProductCard({ product }: ProductCardProps) {
       transition={{ duration: 0.2 }}
     >
       <Card
-        className="group overflow-hidden rounded-2xl border border-border/40 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer [container-type:inline-size] bg-card hover:-translate-y-1"
+        className={cn(
+          "group overflow-hidden rounded-2xl border border-border/40 transition-all duration-500 cursor-pointer [container-type:inline-size] bg-card hover:-translate-y-1",
+          !noShadow && "shadow-sm hover:shadow-2xl"
+        )}
         onClick={navigateToProduct}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {

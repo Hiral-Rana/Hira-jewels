@@ -66,7 +66,7 @@ export default function FeaturedProducts() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: Math.min(index, 10) * 0.1 }}
               >
-                <ProductCard product={product} />
+                <ProductCard product={product} noShadow />
               </motion.div>
             ))}
           </div>
