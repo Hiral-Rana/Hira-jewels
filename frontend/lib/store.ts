@@ -219,10 +219,13 @@ export const useAuthStore = create<AuthStore>()((set) => {
       authPromise = (async () => {
         try {
           const token = typeof window !== 'undefined' ? localStorage.getItem('auth-token') : null;
-          const headers: HeadersInit = {};
-          if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
+          if (!token) {
+            set({ user: null });
+            return;
           }
+
+          const headers: HeadersInit = {};
+          headers['Authorization'] = `Bearer ${token}`;
 
           const response = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/auth/me', {
             cache: 'no-store',

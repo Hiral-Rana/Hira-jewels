@@ -67,7 +67,7 @@ export default function AdminLayout({
 
   const handleLogout = async () => {
     await logout();
-    router.push("/");
+    router.replace("/admin");
     toast.info("Logged out from admin panel");
   };
 

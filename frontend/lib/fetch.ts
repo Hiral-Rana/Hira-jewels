@@ -9,7 +9,8 @@ export async function dedupedFetch<T = any>(
   url: string,
   options?: RequestInit
 ): Promise<T> {
-  const key = `${url}${JSON.stringify(options || {})}`;
+  const normalizedUrl = url.replace(/([^:]\/)\/+/g, '$1');
+  const key = `${normalizedUrl}${JSON.stringify(options || {})}`;
 
   // If there's a pending request for the same URL, return it
   if (pendingRequests.has(key)) {
@@ -17,7 +18,7 @@ export async function dedupedFetch<T = any>(
   }
 
   // Create new request
-  const requestPromise = fetch(url, {
+  const requestPromise = fetch(normalizedUrl, {
     ...options,
     // Add cache headers for GET requests
     cache: options?.method === undefined || options?.method === 'GET' 

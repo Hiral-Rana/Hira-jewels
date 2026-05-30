@@ -5,8 +5,8 @@ const User = require('../models/User');
 
 dotenv.config();
 
-const ADMIN_EMAIL = 'studio.hirajewels@gmail.com';
-const ADMIN_PASSWORD = 'hirajewels@admin';
+const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'studio.hirajewels@gmail.com').trim().toLowerCase();
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@hirajewels';
 
 async function main() {
   if (!process.env.MONGODB_URI) {
