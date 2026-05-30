@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { apiUrl } from "../../lib/api";
 import { toast } from "sonner";
 import Link from "next/link";
 import { LayoutDashboard, ShoppingBag, ClipboardList, LogOut, Menu, X, ShieldAlert, PenTool } from "lucide-react";
@@ -38,7 +39,7 @@ export default function AdminLayout({
     e.preventDefault();
     setAuthLoading(true);
     try {
-      const response = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/auth/login', {
+      const response = await fetch(apiUrl('/api/auth/login'), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,8 +47,9 @@ export default function AdminLayout({
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-      if (response.ok && data.success) {
+      const contentType = response.headers.get("content-type") || "";
+      const data = contentType.includes("application/json") ? await response.json() : null;
+      if (response.ok && data?.success) {
         if (data.token) {
           localStorage.setItem('auth-token', data.token);
           document.cookie = `auth-token=${data.token}; path=/; max-age=86400; SameSite=Strict`;
@@ -55,7 +57,7 @@ export default function AdminLayout({
         await checkAuth();
         toast.success("Welcome back, Admin!");
       } else {
-        toast.error(data.error || "Authentication failed. Access Denied.");
+        toast.error(data?.error || `Authentication failed (${response.status}). Access Denied.`);
       }
     } catch (error) {
       console.error("Admin login error:", error);

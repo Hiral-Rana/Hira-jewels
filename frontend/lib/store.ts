@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { toast } from 'sonner';
+import { apiUrl } from './api';
 
 export interface Product {
   _id?: string;
@@ -227,7 +228,7 @@ export const useAuthStore = create<AuthStore>()((set) => {
           const headers: HeadersInit = {};
           headers['Authorization'] = `Bearer ${token}`;
 
-          const response = await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/auth/me', {
+          const response = await fetch(apiUrl('/api/auth/me'), {
             cache: 'no-store',
             headers,
           });
@@ -259,7 +260,7 @@ export const useAuthStore = create<AuthStore>()((set) => {
           localStorage.removeItem('auth-token');
           document.cookie = 'auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         }
-        await fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/auth/logout', { method: 'POST' });
+        await fetch(apiUrl('/api/auth/logout'), { method: 'POST' });
       } catch (error) {
         console.error('Logout failed:', error);
       }
